@@ -7,8 +7,7 @@ const sateliteSchema = mongoose.Schema({
     required: true,
     trim: true,
     uppercase: true,
-    minlength: 1,
-    maxlength: 50
+    
   },
 
   yearProduccion: {
@@ -23,22 +22,15 @@ const sateliteSchema = mongoose.Schema({
   },
     
   launch: {
-    type: Date,
+    type: mongoose.Types.ObjectId, ref: "Launch",
     required: true,
-    validate: {
-      validator: function(v) {
-        return new Date(v).getFullYear() >= 1957;
-      },
-      message: props => `${props.value} no es una fecha válida a partir del año 1957.`
-    },
-    type: mongoose.Types.ObjectId, ref: "Launch"
+    
   },
   tipo: {
     type: String,
     required: true,
     trim: true,
-    minlength: 1,
-    maxlength: 50
+    
   },
   enOrbita: {
     type: Boolean,

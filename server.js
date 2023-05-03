@@ -17,6 +17,9 @@ app.use("/api/spacecraft", rutasSpacecraft);
 const rutasSatelite = require("./routes/rutas-satelite");
 app.use("/api/satelite", rutasSatelite);
 
+const rutasLaunch = require("./routes/rutas-launches");
+app.use("/api/launch", rutasLaunch);
+
 
 //Conexion con BDD Atlas Cloud.
 //"mongodb+srv://MusaMongodb:12345@cluster0.puazlil.mongodb.net/ProyectNasa?retryWrites=true&w=majority"

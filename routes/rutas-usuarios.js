@@ -119,7 +119,7 @@ router.post("/login", async (req, res, next) => {
     });
   });
   
-router.use(checkAuth);
+
 
 //Lista de los campos.
 router.get("/", async (req, res, next) => {

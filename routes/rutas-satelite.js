@@ -2,6 +2,9 @@
 const express = require("express");
 const router = express.Router();
 const Satelite = require("../models/models-satelite");
+const Launch = require("../models/models-launches");
+const checkAuth = require('../Middleware/check-auth');
+
 
 
 //Lista de los campos
@@ -34,28 +37,28 @@ router.get("/:id", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
     // ? Primero creamos la informacion del satelite y lo guardamos en Atlas
     const { nombre, yearProduccion, launch, tipo, enOrbita } = req.body;
-    const nuevoSatelite = new Curso({
+    const nuevoSatelite = new Satelite({
       // Nuevo documento basado en el Model Satelite.
       nombre: nombre,
       yearProduccion: yearProduccion,
-      launch: launch, // añdir array*
+      launch: launch, 
       tipo: tipo,
       enOrbita: enOrbita,
     });
-    // ? Localizamos el launch que se corresponde con el que hemos recibido en el request.
-    let sateliteBusca;
+    // ? Localizamos el launch que se corresponde con el que hemos recibido en el request. 
+    let launchBusca;
     try {
-      sateliteBusca = await Satelite.findById(req.body.satelite);
+      launchBusca = await Launch.findById(req.body.launch);
     } catch (error) {
       const err = new Error("Ha fallado la operación de creación");
       err.code = 500;
       return next(err);
     }
-    console.log(sateliteBusca);
+    console.log(launchBusca);
     // ? Si no está en la BDD mostrar error y salir
-    if (!sateliteBusca) {
+    if (!launchBusca) {
       const error = new Error(
-        "No se ha podido encontrar el satelite con el id proporcionado"
+        "No existe un launch con ese id"
       );
       error.code = 404;
       return next(error);
@@ -66,11 +69,11 @@ router.post("/", async (req, res, next) => {
      * ?  2 - Añadir el nuevo satelite al array de satelite del launch localizado
      * ?  3 - Guardar el launch, ya con su array de satelite actualizado
      */
-    console.log(sateliteBusca);
+   
     try {
       await nuevoSatelite.save(); // ? (1)
-      sateliteBusca.satelite.push(nuevoSatelite); // ? (2)
-      await sateliteBusca.save(); // ? (3)
+      launchBusca.satelite.push(nuevoSatelite); // ? (2)
+      await launchBusca.save(); // ? (3)
     } catch (error) {
       const err = new Error("Ha fallado la creación de la nueva satelite");
       err.code = 500;
@@ -109,7 +112,7 @@ router.patch("/:id", async (req, res, next) => {
       if (req.body.launch) {
         SateliteBuscar.launch.satelite.pull(SateliteBuscar); // * Elimina el satelite del launch al que se le va a quitar.
         await SateliteBuscar.launch.save(); // * Guarda dicho launch
-        launchBuscar = await launch.findById(req.body.launch); // * Localiza el launch previsto que tendra el satelite.
+        launchBuscar = await Launch.findById(req.body.launch); // * Localiza el launch previsto que tendra el satelite.
         launchBuscar.satelite.push(SateliteBuscar); // * Añade al array de satelite del launch el satelite que se le quitó al otro laucnh.
         launchBuscar.save(); // * Guardar el launch con el nuevo satelite en su array de satelite.
       }
@@ -137,7 +140,7 @@ router.delete("/:id", async (req, res, next) => {
     const idSatelite = req.params.id;
     let satelite;
     try {
-      satelite = await satelite.findById(idSatelite).populate("launch"); // ? Localizamos el satelite en la BDD por su id
+      satelite = await Satelite.findById(idSatelite).populate("launch"); // ? Localizamos el satelite en la BDD por su id
     } catch (err) {
       const error = new Error(
         "Ha habido algún error. No se han podido recuperar los datos para eliminación"

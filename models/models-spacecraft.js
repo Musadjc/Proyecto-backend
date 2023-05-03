@@ -13,15 +13,8 @@ const spacecraftSchema = mongoose.Schema({
     }
   },
   launch: {
-    type: Date,
-    required: true,
-    validate: {
-      validator: function(v) {
-        return new Date(v).getFullYear() >= 1957;
-      },
-      message: props => `${props.value} no es una fecha válida a partir del año 1957.`
-    },
-    type: mongoose.Types.ObjectId, ref: "Launch"
+    type: mongoose.Types.ObjectId, ref: "Launch",
+    // required: true,
   },
   nombre: {
     type: String,
@@ -32,8 +25,7 @@ const spacecraftSchema = mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    minlength: 1,
-    maxlength: 20
+   
   },
   anchura: {
     type: String,

@@ -1,8 +1,8 @@
 //Definir modelo(schema) launches. *ONE TO MANY
 const mongoose = require('mongoose');
-const uniqueValidator = require("mongoose-unique-validator");
 
-const launchSchema = new mongoose.Schema({
+
+const launchSchema = mongoose.Schema({
     misionNombre:{
         type: String,
         required: true,
@@ -23,21 +23,19 @@ const launchSchema = new mongoose.Schema({
     
     spacecraft: [
         { 
-            type: Schema.Types.ObjectId,
-            required: true,
+            type: mongoose.Types.ObjectId,
             ref: "Spacecraft" 
         }
     ],
     satelite: [
         { 
-            type: Schema.Types.ObjectId,
-            required: true,
+            type: mongoose.Types.ObjectId,
             ref: "Satelite" 
         }
     ],
     });
 
-launchSchema.plugin(uniqueValidator);
+
 
 module.exports = mongoose.model('Launch', launchSchema);
 

@@ -1,8 +1,11 @@
 //Definimos ruta de Launches.
 const express = require("express");
 const router = express.Router();
+const checkAuth = require('../Middleware/check-auth');
 
 const Launch = require("../models/models-launches")
+//
+
 
 // * Listar todos los launch.
 router.get("/", async (req, res, next) => {
@@ -128,3 +131,5 @@ router.delete("/:id", async (req, res, next) => {
       launch: launch,
     });
   });
+
+  module.exports = router;
