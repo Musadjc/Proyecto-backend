@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 require('dotenv').config();
 
+app.use(cors())
 app.use(express.json());
 
 // app.get('/api/events', (req, res) => {
