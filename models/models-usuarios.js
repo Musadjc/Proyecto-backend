@@ -11,13 +11,13 @@ const usuarioSchema = mongoose.Schema({
     },
     apellidos: {
         type: String,
-        required: true,
+        
         trim: true,
         uppercase: true,
     },
     años: {
         type: Number,
-        required: true,
+    
         trim: true,
 
     },
