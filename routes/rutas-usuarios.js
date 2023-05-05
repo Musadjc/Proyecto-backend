@@ -47,6 +47,7 @@ router.post("/", async (req, res, next) => {
     try {
       await nuevoUsuario.save();
           } catch (error) {
+            console.log(error)
           const err = new Error("No se han podido guardar los datos");
           err.code = 500;
           return next(err);
