@@ -17,7 +17,6 @@ const usuarioSchema = mongoose.Schema({
     },
     años: {
         type: Number,
-    
         trim: true,
 
     },

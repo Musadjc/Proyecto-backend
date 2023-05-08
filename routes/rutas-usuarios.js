@@ -52,8 +52,27 @@ router.post("/", async (req, res, next) => {
           err.code = 500;
           return next(err);
           }
+          // Creacion del token
+          try {
+            token = jwt.sign(
+              {
+                userId: nuevoUsuario.id,
+                email: nuevoUsuario.email,
+              },
+              "clave_secretpassword",
+              {
+                expiresIn: "1d",
+              }
+            );
+          } catch (error) {
+            const err = new Error("EL proceso de alt aha fallado");
+            err.code = 500;
+            return next(err);
+          }
           res.status(201).json({
-          usuarios: nuevoUsuario,
+            userId: nuevoUsuario.id,
+            email: nuevoUsuario.email,
+            token: token,
           });
   }
 })
@@ -120,7 +139,6 @@ router.post("/login", async (req, res, next) => {
     });
   });
   
-
 
 //Lista de los campos.
 router.get("/", async (req, res, next) => {
