@@ -139,25 +139,50 @@ router.post("/login", async (req, res, next) => {
     });
   });
   
+  
+  //Lista de los campos.
+  router.get("/", async (req, res, next) => {
+    let usuario;
+    try {
+      usuario = await Usuario.find({}, "-password");
+    } catch (err) {
+      const error = new Error(
+        'Ha habido algún error. No se han podido recuperar los datos'
+      );
+      error.code = 500;
+      return next(error);
+    }
+    res.status(200).json({
+      mensaje: "Datos de los usuarios",
+      usuario: usuario,
+    });
+  });
 
-//Lista de los campos.
-router.get("/", async (req, res, next) => {
+// * Listar un docente en concreto
+router.get("/:id", async (req, res, next) => {
+  const idUsuario = req.params.id;
   let usuario;
   try {
-    usuario = await Usuario.find({}, "-password");
+    usuario = await Usuario.findById(idUsuario);
   } catch (err) {
     const error = new Error(
-      'Ha habido algún error. No se han podido recuperar los datos'
+      "Ha habido algún error. No se han podido recuperar los datos"
     );
     error.code = 500;
     return next(error);
   }
-  res.status(200).json({
-    mensaje: "Datos de los usuarios",
+  if (!usuario) {
+    const error = new Error(
+      "No se ha podido encontrar un usuario con el id proporcionado"
+    );
+    error.code = 404;
+    return next(error);
+  }
+  res.json({
+    mensaje: "Usuario encontrado",
     usuario: usuario,
   });
 });
-
 
 //Modificación datos de un usaurio mediante (findByIdAndUpdate)
 router.patch("/:id", async (req, res, next) => {
