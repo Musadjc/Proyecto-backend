@@ -7,6 +7,7 @@ const checkAuth = require('../Middleware/check-auth');
 
 
 
+
 //Lista de los campos
 router.get("/:id", async (req, res, next) => {
     const idSatelite = req.params.id;

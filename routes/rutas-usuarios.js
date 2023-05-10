@@ -52,7 +52,7 @@ router.get("/:id", async (req, res, next) => {
 
 //Creación de usuarios
 router.post("/", async (req, res, next) => {
-  const { nombre, password, email } = req.body;
+  const { nombre, apellidos, años, password, email } = req.body;
   console.log(password)
   let existeUsuario;
   try {
@@ -181,8 +181,6 @@ router.post("/login", async (req, res, next) => {
     });
   });
   
-  
- 
 
 //Modificación datos de un usaurio mediante (findByIdAndUpdate)
 router.patch("/:id", async (req, res, next) => {
@@ -212,8 +210,8 @@ router.patch("/:id", async (req, res, next) => {
       });
     });
     
-    //Eliminar un usuario
-    router.delete("/:id", async (req, res, next) => {
+//Eliminar un usuario
+router.delete("/:id", async (req, res, next) => {
       let usuario;
       try {
         usuario = await Usuario.findByIdAndDelete(req.params.id);
@@ -228,7 +226,7 @@ router.patch("/:id", async (req, res, next) => {
           mensaje: "Usuario eliminado",
           usuario: usuario,
         });
-      });
+    });
       
       
       
